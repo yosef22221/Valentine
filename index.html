@@ -41,7 +41,6 @@
       display: flex;
       justify-content: center;
       gap: 20px;
-      position: relative;
     }
 
     button {
@@ -56,13 +55,11 @@
     #yesBtn {
       background: #ff4d6d;
       color: white;
-      z-index: 2;
     }
 
     #noBtn {
       background: #ccc;
       color: #333;
-      z-index: 1;
     }
 
     #finalMessage {
@@ -80,21 +77,33 @@
       color: #444;
     }
 
+    .finalImage {
+      margin-top: 20px;
+      max-width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+    }
+
     /* Heart confetti */
     .heart {
       position: fixed;
+      top: -30px; /* startar från toppen */
       font-size: 24px;
-      animation: fall 4s linear forwards;
+      animation: fall linear forwards;
     }
 
     @keyframes fall {
-      from {
-        transform: translateY(-10vh);
-        opacity: 1;
-      }
       to {
         transform: translateY(110vh);
         opacity: 0;
+      }
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
       }
     }
   </style>
@@ -113,6 +122,9 @@
     <div id="finalMessage">
       <h2>YAYYYYYY 💕</h2>
       <p>I love you ❤️<br>See u on Saturday 14 feb 😉.</p>
+
+      <!-- 🔽 BYT FILNAMN TILL DIN BILD -->
+      <img src="image.jpg" alt="Us 💕" class="finalImage">
     </div>
   </div>
 
@@ -157,7 +169,7 @@
     });
 
     function explodeHearts() {
-      for (let i = 0; i < 500; i++) {
+      for (let i = 0; i < 300; i++) {
         const heart = document.createElement("div");
         heart.className = "heart";
         heart.innerText = "💖";
@@ -165,9 +177,10 @@
         heart.style.animationDuration = 3 + Math.random() * 2 + "s";
         document.body.appendChild(heart);
 
-        setTimeout(() => heart.remove(), 8000);
+        setTimeout(() => heart.remove(), 6000);
       }
     }
   </script>
 </body>
 </html>
+
