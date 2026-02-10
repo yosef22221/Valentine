@@ -28,6 +28,7 @@
 
     h1 {
       color: #ff4d6d;
+      margin-bottom: 10px;
     }
 
     p {
@@ -40,6 +41,7 @@
       display: flex;
       justify-content: center;
       gap: 20px;
+      position: relative;
     }
 
     button {
@@ -54,60 +56,46 @@
     #yesBtn {
       background: #ff4d6d;
       color: white;
+      z-index: 2;
     }
 
     #noBtn {
       background: #ccc;
       color: #333;
+      z-index: 1;
     }
 
-    #yay {
+    #finalMessage {
       display: none;
-      font-size: 32px;
+      text-align: center;
+    }
+
+    #finalMessage h2 {
+      font-size: 48px;
       color: #ff4d6d;
-      margin-top: 20px;
     }
 
-    /* Confetti */
-    .confetti {
-      position: fixed;
-      width: 8px;
-      height: 8px;
-      top: -10px;
-      animation: fall linear forwards;
+    #finalMessage p {
+      font-size: 22px;
+      color: #444;
     }
 
-    /* Hearts */
+    /* Heart confetti */
     .heart {
       position: fixed;
-      bottom: -20px;
       font-size: 24px;
-      animation: floatUp 4s linear forwards;
+      animation: fall 4s linear forwards;
     }
 
     @keyframes fall {
-      to {
-        transform: translateY(110vh) rotate(360deg);
+      from {
+        transform: translateY(-10vh);
+        opacity: 1;
       }
-    }
-
-    @keyframes floatUp {
       to {
-        transform: translateY(-110vh);
+        transform: translateY(110vh);
         opacity: 0;
       }
-    }
-
-    .shake {
-      animation: shake 0.3s;
-    }
-
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
     }
   </style>
 </head>
@@ -122,83 +110,62 @@
       <button id="noBtn">No</button>
     </div>
 
-    <div id="yay">YAYYYYY!! 💕🎉</div>
+    <div id="finalMessage">
+      <h2>YAY 💕</h2>
+      <p>I love you ❤️<br>You make my world brighter every day.</p>
+    </div>
   </div>
 
   <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
-    const yay = document.getElementById("yay");
     const card = document.getElementById("card");
+    const finalMessage = document.getElementById("finalMessage");
 
     const noTexts = [
       "No",
+      "Think again 🤔",
+      "One more time?",
+      "Really no?",
       "Are you sure?",
-      "Do you mean it?",
-      "Pretty please 🥺",
-      "I am sad 😢",
-      "That hurts 💔",
-      "LAST CHANCE 😭"
+      "Please… 🥺",
+      "Last chance 💔"
     ];
 
-    let noCount = 0;
-    let yesFont = 18;
+    let noIndex = 0;
+    let yesSize = 18;
     let yesPadding = 30;
 
     noBtn.addEventListener("click", () => {
-      if (noCount < noTexts.length - 1) {
-        noCount++;
-        noBtn.textContent = noTexts[noCount];
+      if (noIndex < noTexts.length - 1) {
+        noIndex++;
+        noBtn.textContent = noTexts[noIndex];
       }
 
-      yesFont += 8;
-      yesPadding += 14;
+      yesSize += 8;
+      yesPadding += 18;
 
-      yesBtn.style.fontSize = yesFont + "px";
-      yesBtn.style.padding = "16px " + yesPadding + "px";
-
-      card.classList.add("shake");
-      setTimeout(() => card.classList.remove("shake"), 300);
+      yesBtn.style.fontSize = yesSize + "px";
+      yesBtn.style.padding = "18px " + yesPadding + "px";
     });
 
     yesBtn.addEventListener("click", () => {
-      yesBtn.style.position = "fixed";
-      yesBtn.style.top = "0";
-      yesBtn.style.left = "0";
-      yesBtn.style.width = "100vw";
-      yesBtn.style.height = "100vh";
-      yesBtn.style.fontSize = "48px";
-      yesBtn.innerText = "YAY 💕";
-
-      noBtn.style.display = "none";
-      yay.style.display = "block";
-
-      launchConfetti();
-      launchHearts();
+      card.innerHTML = "";
+      card.appendChild(finalMessage);
+      finalMessage.style.display = "block";
+      explodeHearts();
     });
 
-    function launchConfetti() {
-      for (let i = 0; i < 150; i++) {
-        const c = document.createElement("div");
-        c.className = "confetti";
-        c.style.left = Math.random() * 100 + "vw";
-        c.style.backgroundColor =
-          `hsl(${Math.random() * 360}, 100%, 50%)`;
-        c.style.animationDuration = 2 + Math.random() * 2 + "s";
-        document.body.appendChild(c);
-        setTimeout(() => c.remove(), 4000);
-      }
-    }
+    function explodeHearts() {
+      for (let i = 0; i < 200; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = 3 + Math.random() * 2 + "s";
+        document.body.appendChild(heart);
 
-    function launchHearts() {
-      for (let i = 0; i < 40; i++) {
-        const h = document.createElement("div");
-        h.className = "heart";
-        h.innerText = "💖";
-        h.style.left = Math.random() * 100 + "vw";
-        h.style.animationDuration = 3 + Math.random() * 2 + "s";
-        document.body.appendChild(h);
-        setTimeout(() => h.remove(), 5000);
+        setTimeout(() => heart.remove(), 5000);
       }
     }
   </script>
