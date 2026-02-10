@@ -22,6 +22,7 @@
       text-align: center;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
       max-width: 420px;
+      z-index: 1;
     }
 
     h1 {
@@ -36,17 +37,18 @@
     }
 
     .buttons {
-      position: relative;
-      height: 100px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
     }
 
     button {
-      padding: 12px 28px;
+      padding: 14px 30px;
       font-size: 18px;
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      transition: transform 0.3s ease, font-size 0.3s ease;
     }
 
     #yesBtn {
@@ -54,65 +56,100 @@
       color: white;
     }
 
-    #yesBtn:hover {
-      transform: scale(1.1);
-    }
-
     #noBtn {
-      position: absolute;
       background-color: #ccc;
       color: #333;
     }
 
-    .yes-message {
-      font-size: 22px;
+    .yay {
+      display: none;
+      font-size: 28px;
       color: #ff4d6d;
       margin-top: 20px;
-      display: none;
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      top: -10px;
+      animation: fall 3s linear infinite;
+      opacity: 0.9;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+      }
     }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Hey Fierelle 💖</h1>
-    <p>
-      I was wondering…<br />
-      will you be my Valentine? 🌹
-    </p>
+    <p>Will you be my Valentine? 🌹</p>
 
     <div class="buttons">
       <button id="yesBtn">Yes 💘</button>
-      <button id="noBtn">No 🙃</button>
+      <button id="noBtn">No</button>
     </div>
 
-    <div class="yes-message" id="yesMessage">
-      Yay!! 💕 Best Valentine ever 🥰
+    <div class="yay" id="yayMessage">
+      YAYYYYY!! 💕🎉 Best Valentine ever 🥰
     </div>
   </div>
 
   <script>
-    const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
-    const yesMessage = document.getElementById("yesMessage");
+    const noBtn = document.getElementById("noBtn");
+    const yayMessage = document.getElementById("yayMessage");
 
-    // place the "No" button somewhere initially
-    function moveNoButton() {
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 100);
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    }
+    const noTexts = [
+      "No",
+      "Are you sure?",
+      "Do you mean it?",
+      "Pretty please 🥺",
+      "I am sad 😢",
+      "That really hurts 💔",
+      "Last chance… 😞"
+    ];
 
-    moveNoButton();
+    let noClicks = 0;
+    let yesScale = 1;
 
-    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("click", () => {
+      if (noClicks < noTexts.length - 1) {
+        noClicks++;
+        noBtn.textContent = noTexts[noClicks];
+      }
+
+      yesScale += 0.25;
+      yesBtn.style.transform = `scale(${yesScale})`;
+    });
 
     yesBtn.addEventListener("click", () => {
-      yesMessage.style.display = "block";
-      yesBtn.style.display = "none";
       noBtn.style.display = "none";
+      yesBtn.style.display = "none";
+      yayMessage.style.display = "block";
+      launchConfetti();
     });
+
+    function launchConfetti() {
+      for (let i = 0; i < 120; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor =
+          `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.animationDuration =
+          2 + Math.random() * 2 + "s";
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 4000);
+      }
+    }
   </script>
 </body>
 </html>
-
