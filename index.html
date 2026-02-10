@@ -157,7 +157,7 @@
     });
 
     function explodeHearts() {
-      for (let i = 0; i < 200; i++) {
+      for (let i = 0; i < 500; i++) {
         const heart = document.createElement("div");
         heart.className = "heart";
         heart.innerText = "💖";
@@ -165,7 +165,7 @@
         heart.style.animationDuration = 3 + Math.random() * 2 + "s";
         document.body.appendChild(heart);
 
-        setTimeout(() => heart.remove(), 5000);
+        setTimeout(() => heart.remove(), 8000);
       }
     }
   </script>
